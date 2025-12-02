@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-import { isAdmin } from "../middlewares/adminMiddleware.js";
+import { isAdmin } from "../middlewares/authMiddleware.js";
 import {
   createPlaylist,
   getAllPlaylists,

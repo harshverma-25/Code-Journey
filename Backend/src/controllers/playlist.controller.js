@@ -1,4 +1,4 @@
-import { Playlist } from "../models/Playlist.js";
+import { Playlist } from "../models/playlist.model.js";
 
 // Create playlist (ADMIN only)
 export const createPlaylist = async (req, res) => {

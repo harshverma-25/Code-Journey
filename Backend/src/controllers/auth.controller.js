@@ -212,3 +212,62 @@ export const getProfile = async (req, res) => {
   }
 };
 
+export const generateNewAccessToken = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "No refresh token found",
+      });
+    }
+
+    // Validate refresh token
+    let decoded;
+    try {
+      decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    } catch (err) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired refresh token",
+      });
+    }
+
+    const user = await User.findById(decoded._id);
+
+    if (!user || user.refreshToken !== refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Refresh token does not match",
+      });
+    }
+
+    // Generate new access token
+    const newAccessToken = user.generateAccessToken();
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", newAccessToken, cookieOptions)
+      .json({
+        success: true,
+        message: "Access token refreshed",
+      });
+
+  } catch (error) {
+    console.error("REFRESH TOKEN ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error refreshing access token",
+    });
+  }
+};
+
+

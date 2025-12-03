@@ -21,9 +21,15 @@ app.use(cookieParser());
 // Routes import
 import authRoutes from "./routes/auth.route.js";
 import playlistRoutes from "./routes/playlist.route.js";
+import questionRoutes from "./routes/question.route.js";
+import progressRoutes from "./routes/progress.route.js";
+import profileRoute from "./routes/profile.route.js";
 
 // Routes declaration
 app.use("/api/auth", authRoutes);
 app.use("/api/playlists", playlistRoutes);
+app.use("/api/questions", questionRoutes);
+app.use("/api/progress", progressRoutes);
+app.use("/api/profile", profileRoute);
 
 export { app };

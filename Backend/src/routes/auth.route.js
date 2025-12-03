@@ -2,6 +2,7 @@ import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
 import { registerSchema, loginSchema } from "../validators/auth.validator.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { generateNewAccessToken } from "../controllers/auth.controller.js";
 
 import {
   registerUser,
@@ -23,5 +24,7 @@ router.post("/logout", authMiddleware, logoutUser);
 
 // Get profile (PRIVATE)
 router.get("/profile", authMiddleware, getProfile);
+
+router.get("/refresh", generateNewAccessToken);
 
 export default router;
